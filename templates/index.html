@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Recommendation System</title>
+    <style>
+        /* --- CORE STYLES (Largely Unchanged) --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-blue: #3b82f6; --light-blue: #e3f2fd; --lighter-blue: #f8fbff;
+            --dark-blue: #1e3a8a; --gray-600: #4b5563; --gray-400: #9ca3af;
+            --white: #ffffff; --success-green: #10b981; --error-red: #ef4444;
+            --shadow-light: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --shadow-medium: 0 10px 25px rgba(0, 0, 0, 0.1);
+            --shadow-heavy: 0 25px 50px rgba(0, 0, 0, 0.1);
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', sans-serif;
+            background: linear-gradient(135deg, var(--light-blue) 0%, var(--lighter-blue) 100%);
+            color: var(--dark-blue); line-height: 1.6; scroll-behavior: smooth; overflow-x: hidden;
+        }
+
+        /* --- NEW SIMPLIFIED LAYOUT FOR INDEX.HTML --- */
+        .page-container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        
+        /* Section 1: Hero / Landing Content */
+        .hero-section {
+            min-height: 90vh; /* Shows the user there's content below */
+            display: flex; align-items: center; justify-content: center; text-align: center;
+        }
+        .hero-content { max-width: 600px; animation: slideInUp 1s ease-out; }
+        
+        /* Section 2: The Form */
+        .form-section {
+            display: flex; justify-content: center; padding: 4rem 0;
+        }
+
+        /* --- ALL COMPONENT STYLES BELOW ARE KEPT THE SAME --- */
+        /* --- The buttons, inputs, titles, etc. were well-styled. --- */
+
+        .logo { font-size: 4rem; margin-bottom: 1rem; background: linear-gradient(135deg, #60a5fa, var(--primary-blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1)); }
+        .main-title { font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; background: linear-gradient(135deg, var(--dark-blue), #3730a3); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .subtitle { font-size: 1.2rem; color: var(--gray-600); margin-bottom: 3rem; font-weight: 400; max-width: 500px; margin-left: auto; margin-right: auto; }
+        .cta-button { background: linear-gradient(135deg, var(--primary-blue), #1d4ed8); color: var(--white); border: none; padding: 1rem 2.5rem; font-size: 1.1rem; font-weight: 600; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3); position: relative; overflow: hidden; }
+        .cta-button::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent); transition: left 0.6s; }
+        .cta-button:hover::before { left: 100%; }
+        .cta-button:hover { transform: translateY(-2px); box-shadow: 0 15px 35px rgba(59, 130, 246, 0.4); }
+        .form-container { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-radius: 20px; padding: 3rem; box-shadow: var(--shadow-heavy); border: 1px solid rgba(255, 255, 255, 0.2); max-width: 500px; width: 100%; animation: slideInUp 0.6s ease-out; }
+        .form-title { text-align: center; font-size: 2rem; font-weight: 700; margin-bottom: 2rem; color: var(--dark-blue); }
+        .form-grid { display: grid; gap: 1.5rem; }
+        .input-group { position: relative; }
+        .input-label { display: block; font-weight: 600; margin-bottom: 0.5rem; color: #374151; font-size: 0.95rem; }
+        .input-field { width: 100%; padding: 0.875rem 1rem; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 1rem; transition: all 0.3s ease; background: var(--white); }
+        .input-field:focus { outline: none; border-color: var(--primary-blue); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+        .input-field::placeholder { color: var(--gray-400); }
+        .submit-button { width: 100%; background: linear-gradient(135deg, var(--primary-blue), #1d4ed8); color: var(--white); border: none; padding: 1rem; font-size: 1.1rem; font-weight: 600; border-radius: 10px; cursor: pointer; transition: all 0.3s ease; margin-top: 1rem; position: relative; overflow: hidden; }
+        .submit-button:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3); }
+        .loading-spinner { width: 20px; height: 20px; border: 2px solid rgba(255, 255, 255, 0.3); border-top: 2px solid var(--white); border-radius: 50%; animation: spin 1s linear infinite; margin-right: 0.5rem; display: inline-block; }
+        .error-message { background: #fef2f2; color: var(--error-red); padding: 1rem; border-radius: 10px; border: 1px solid #fecaca; margin-top: 1rem; text-align: center; animation: slideInUp 0.5s ease-out; }
+        @keyframes slideInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @media (max-width: 640px) { .form-container { padding: 2rem 1.5rem; margin: 1rem; } .main-title { font-size: 2rem; } .logo { font-size: 3rem; } .hero-content { padding: 0 1rem; } .subtitle { font-size: 1.1rem; } }
+        @media (max-width: 480px) { .cta-button { padding: 0.875rem 2rem; font-size: 1rem; } .form-container { padding: 1.5rem 1rem; } .form-title { font-size: 1.75rem; } }
+    </style>
+</head>
+<body>
+
+    <main class="page-container">
+        <section class="hero-section">
+            <div class="hero-content">
+                <div class="logo">🌾</div>
+                <h1 class="main-title">Crop Recommendation System</h1>
+                <p class="subtitle">
+                    Get intelligent crop recommendations based on soil nutrients, climate conditions, and environmental factors using advanced machine learning.
+                </p>
+                <button class="cta-button" onclick="document.getElementById('form-section').scrollIntoView()">
+                    Get Started
+                </button>
+            </div>
+        </section>
+
+        <section id="form-section" class="form-section">
+            <div class="form-container">
+                <h2 class="form-title">Enter Crop Parameters</h2>
+                
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label class="input-label" for="N">Nitrogen (N) - mg/kg</label>
+                        <input type="number" step="any" name="N" id="N" class="input-field" required placeholder="e.g. 90">
+                    </div>
+                    <div class="input-group"><label class="input-label" for="P">Phosphorus (P) - mg/kg</label><input type="number" step="any" name="P" id="P" class="input-field" required placeholder="e.g. 42"></div>
+                    <div class="input-group"><label class="input-label" for="K">Potassium (K) - mg/kg</label><input type="number" step="any" name="K" id="K" class="input-field" required placeholder="e.g. 43"></div>
+                    <div class="input-group"><label class="input-label" for="temperature">Temperature (°C)</label><input type="number" step="any" name="temperature" id="temperature" class="input-field" required placeholder="e.g. 20.9"></div>
+                    <div class="input-group"><label class="input-label" for="humidity">Humidity (%)</label><input type="number" step="any" name="humidity" id="humidity" class="input-field" required placeholder="e.g. 82"></div>
+                    <div class="input-group"><label class="input-label" for="ph">pH Level</label><input type="number" step="any" name="ph" id="ph" class="input-field" required placeholder="e.g. 6.5"></div>
+                    <div class="input-group"><label class="input-label" for="rainfall">Rainfall (mm)</label><input type="number" step="any" name="rainfall" id="rainfall" class="input-field" required placeholder="e.g. 202.9"></div>
+                </div>
+
+                <button type="button" class="submit-button" onclick="predictCrop()" id="predictBtn">
+                    Predict Crop
+                </button>
+
+                <div id="results"></div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // --- SCRIPT SIMPLIFICATION ---
+        // REMOVED: The goToPrediction() and goToLanding() functions are no longer needed.
+        // This makes the script much cleaner.
+
+        // All the form handling functions below are KEPT from your original code.
+        function getFormData() { /* ... same as before ... */ return { N: parseFloat(document.getElementById('N').value), P: parseFloat(document.getElementById('P').value), K: parseFloat(document.getElementById('K').value), temperature: parseFloat(document.getElementById('temperature').value), humidity: parseFloat(document.getElementById('humidity').value), ph: parseFloat(document.getElementById('ph').value), rainfall: parseFloat(document.getElementById('rainfall').value) }; }
+        function validateForm() { /* ... same as before ... */ const i=document.querySelectorAll('.input-field');for(let t of i)if(!t.value||isNaN(parseFloat(t.value)))return!1;return!0 }
+        function setLoading(isLoading) { /* ... same as before ... */ const btn=document.getElementById('predictBtn');if(isLoading){btn.innerHTML='<span class="loading-spinner"></span>Predicting...';btn.disabled=true;}else{btn.innerHTML='Predict Crop';btn.disabled=false;} }
+        function showError(message) { /* ... same as before ... */ document.getElementById('results').innerHTML = `<div class="error-message">${message}</div>`; }
+        function clearResults() { document.getElementById('results').innerHTML = ''; }
+
+        // --- CORE LOGIC - UNCHANGED ---
+        // This function works perfectly for your two-page flow.
+        async function predictCrop() {
+            if (!validateForm()) {
+                showError('Please fill in all fields with valid numbers.');
+                return;
+            }
+
+            const formData = getFormData();
+            setLoading(true);
+            clearResults();
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Server responded with status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                const crop = result.result; 
+
+                if (crop) {
+                    // KEPT: This is your original, correct logic.
+                    // 1. Save result to session storage
+                    sessionStorage.setItem('predictionResult', crop);
+                    // 2. Redirect to the result page
+                    window.location.href = '/result';
+                } else {
+                    throw new Error("Prediction result not found in server response.");
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                showError('Failed to get prediction. Please try again.');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // Event listener for Enter key submission
+        document.addEventListener('DOMContentLoaded', function() { /* ... same as before ... */ const i=document.querySelectorAll('.input-field');i.forEach(i=>{i.addEventListener('keypress',function(e){if(e.key==='Enter'){predictCrop();}})})});
+    </script>
+</body>
+</html>
