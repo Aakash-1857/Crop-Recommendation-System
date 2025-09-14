@@ -24,7 +24,7 @@ An AI-powered system that recommends the most suitable crop to grow based on soi
 - Deployment link (see below)  
 
 ## 🚀 Live Demo
-🔗 [Crop Recommendation App](https://your-deployment-link-here)
+🔗 [Crop Recommendation App](https://crop-recommendation-system-icqy.onrender.com/)
 
 ---
 Made for **Smart India Hackathon (SIH 2025)**
