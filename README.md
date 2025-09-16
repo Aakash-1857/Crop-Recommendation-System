@@ -6,7 +6,7 @@ This README provides an overview of the project, including team details, relevan
 
 **Team Name:** TEAM_NAME_HERE
 
-**Team Leader:** [@USERNAME](https://github.com/Aakash-1857)
+**Team Leader:** [Aakash-1857](https://github.com/Aakash-1857)
 
 **Team Members:**
 
