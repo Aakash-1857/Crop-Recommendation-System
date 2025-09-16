@@ -21,7 +21,7 @@ This README provides an overview of the project, including team details, relevan
 
 ## 🔗 Project Links
 
-- **SIH Presentation:** [Final SIH Presentation](./ppt/Your_Presentation_File.pptx)
+- **SIH Presentation:** [Final SIH Presentation](https://github.com/Aakash-1857/Crop-Recommendation-System/blob/main/SIH%20PPT.pdf)
 - **Video Demonstration:** [Watch Video](https://youtu.be/jgvEz2UukkA?si=9-FUT4vyvWLIFCJq)
 - **Live Deployment:** [Crop Recommendation App](https://crop-recommendation-system-icqy.onrender.com/)
 - **Source Code:** [GitHub Repository](https://github.com/Aakash-1857/Crop-Recommendation-System)
