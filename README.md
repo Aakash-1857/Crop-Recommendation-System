@@ -4,7 +4,7 @@ This README provides an overview of the project, including team details, relevan
 
 ## 👥 Team Details
 
-**Team Name:** TEAM_NAME_HERE
+**Team Name:** Code Catalyst
 
 **Team Leader:** [Aakash-1857](https://github.com/Aakash-1857)
 
