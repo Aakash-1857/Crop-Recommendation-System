@@ -10,12 +10,12 @@ This README provides an overview of the project, including team details, relevan
 
 **Team Members:**
 
-- **MEMBER_1** - ROLL_NUMBER - [@USERNAME](https://github.com/USERNAME)
-- **MEMBER_2** - ROLL_NUMBER - [@USERNAME](https://github.com/USERNAME)
-- **MEMBER_3** - ROLL_NUMBER - [@USERNAME](https://github.com/USERNAME)
-- **MEMBER_4** - ROLL_NUMBER - [@USERNAME](https://github.com/USERNAME)
-- **MEMBER_5** - ROLL_NUMBER - [@USERNAME](https://github.com/USERNAME)
-- **MEMBER_6** - ROLL_NUMBER - [@USERNAME](https://github.com/USERNAME)
+- **MEMBER_1** - 2024UCM2331 - Himanshi
+- **MEMBER_2** - 2024UCM2321 - Navratan
+- **MEMBER_3** - 2024UCM2378 - Jhanvi
+- **MEMBER_4** - 2024UCM2367 - Prisha
+- **MEMBER_5** - 2024UCM2369 - Siddh
+- **MEMBER_6** - 2024UCM2848 - Aakash
 
 ---
 
